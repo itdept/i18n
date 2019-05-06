@@ -3,8 +3,8 @@ package database
 import (
 	"fmt"
 
+	"github.com/CarlosPadilla/i18n"
 	"github.com/jinzhu/gorm"
-	"github.com/qor/i18n"
 )
 
 // Translation is a struct used to save translations into databae

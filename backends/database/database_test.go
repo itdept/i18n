@@ -3,9 +3,9 @@ package database_test
 import (
 	"testing"
 
+	"github.com/CarlosPadilla/i18n"
+	"github.com/CarlosPadilla/i18n/backends/database"
 	"github.com/jinzhu/gorm"
-	"github.com/qor/i18n"
-	"github.com/qor/i18n/backends/database"
 	"github.com/qor/qor/test/utils"
 )
 
