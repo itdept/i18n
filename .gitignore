@@ -17,3 +17,5 @@ TAGS
 gin-bin
 *.js.map
 node_modules/
+vendor
+.vscode

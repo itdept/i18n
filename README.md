@@ -43,18 +43,6 @@ en-US:
     hello: "Hello, world"
 ```
 
-### Use built-in interface for translation management with [QOR Admin](http://github.com/qor/admin)
-
-I18n has a built-in web interface for translations which is integrated with [QOR Admin](http://github.com/qor/admin).
-
-```go
-Admin.AddResource(I18n)
-```
-
-Then a page like this will be added to [QOR Admin](http://github.com/qor/admin) interface
-
-Refer the [online demo](http://demo.getqor.com/admin/translations).
-
 ### Use with Golang templates
 
 The easy way to use I18n in a template is to define a `t` function and register it as `FuncMap`:
@@ -142,25 +130,6 @@ I18n.T("en-US", "count", map[string]int{"Count": 1}) //=> 1 item
 ```go
 I18n.AddTranslation(&i18n.Translation{Key: "ordered_params", Locale: "en-US", Value: "{{$1}} {{$2}} {{$1}}"})
 I18n.T("en-US", "ordered_params", "string1", "string2") //=> string1 string2 string1
-```
-
-### Inline Edit
-
-You could manage translations' data with [QOR Admin](http://github.com/qor/admin) interface (UI) after registering it into [QOR Admin](http://github.com/qor/admin), however we warn you that it is usually quite hard (and error prone!) to *translate a translation* without knowing its context...Fortunately, the *Inline Edit* feature of [QOR Admin](http://github.com/qor/admin) was developed to resolve this problem!
-
-*Inline Edit* allows administrators to manage translations from the frontend. Similarly to [integrating with Golang Templates](#integrate-with-golang-templates), you need to register a func map for Golang templates to render *inline editable* translations.
-
-The good thing is we have created a package for you to do this easily, it will generate a `FuncMap`, you just need to use it when parsing your templates:
-
-```go
-// `I18n` hold translations backends
-// `en-US` current locale
-// `true` enable inline edit mode or not, if inline edit not enabled, it works just like the funcmap in section "Integrate with Golang Templates"
-inline_edit.FuncMap(I18n, "en-US", true) // => map[string]interface{}{
-                                         //     "t": func(string, ...interface{}) template.HTML {
-                                         //        // ...
-                                         //      },
-                                         //    }
 ```
 
 ## License
