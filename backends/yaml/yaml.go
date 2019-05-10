@@ -3,6 +3,7 @@ package yaml
 import (
 	"errors"
 	"fmt"
+	"github.com/gobuffalo/packr/v2"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -11,7 +12,6 @@ import (
 
 	"github.com/itdept/i18n"
 	"gopkg.in/yaml.v2"
-	"github.com/gobuffalo/packr/v2"
 )
 
 var _ i18n.Backend = &Backend{}
@@ -24,7 +24,7 @@ func New(paths ...string) *Backend {
 	for _, p := range paths {
 		if file, err := os.Open(p); err == nil {
 			defer file.Close()
-			if? fileInfo, err := file.Stat(); err == nil {
+			if fileInfo, err := file.Stat(); err == nil {
 				if fileInfo.IsDir() {
 					yamlFiles, _ := filepath.Glob(filepath.Join(p, "*.yaml"))
 					files = append(files, yamlFiles...)
