@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gobuffalo/packr/v2"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -46,18 +47,30 @@ func New(paths ...string) *Backend {
 }
 
 // New new YAML backend for I18n that implements backer to package the files
-func NewWithPacker(packerName string, path string) {
+func NewWithPacker(packerName string, path string) error{
 
+	log.Print("*************** on NewWithPacker")
 
 	box := packr.New(packerName, path)
 
 	filesInBox := box.List()
 
 	for _, file := range filesInBox {
-		fmt.Println(file)
+		log.Println(file)
+
+		if strings.Contains(file, "yml") {
+			s, err := box.FindString(file)
+
+			if err != nil {
+				return err
+			}
+
+			log.Print(s)
+		}
+
 	}
 
-	fmt.Println(filesInBox)
+	return nil
 }
 
 // NewWithWalk has the same functionality as New but uses filepath.Walk to find all the translation files recursively.
