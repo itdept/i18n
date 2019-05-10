@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/CarlosPadilla/i18n"
+	"github.com/itdept/i18n"
 	"gopkg.in/yaml.v2"
 )
 

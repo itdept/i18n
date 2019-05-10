@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.com/CarlosPadilla/i18n"
+	"github.com/itdept/i18n"
 	"github.com/jinzhu/gorm"
 )
 

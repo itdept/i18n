@@ -3,8 +3,8 @@ package database_test
 import (
 	"testing"
 
-	"github.com/CarlosPadilla/i18n"
-	"github.com/CarlosPadilla/i18n/backends/database"
+	"github.com/itdept/i18n"
+	"github.com/itdept/i18n/backends/database"
 	"github.com/jinzhu/gorm"
 	"github.com/qor/qor/test/utils"
 )

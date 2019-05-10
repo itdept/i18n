@@ -1,4 +1,4 @@
-module github.com/CarlosPadilla/i18n
+module github.com/itdept/i18n
 
 go 1.12
 
