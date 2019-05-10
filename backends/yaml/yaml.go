@@ -47,10 +47,9 @@ func New(paths ...string) *Backend {
 }
 
 // New new YAML backend for I18n that implements backer to package the files
-func NewWithPacker(packerName string, path string) error{
+func NewWithPacker(packerName string, path string) (*Backend, error){
 
-	log.Print("*************** on NewWithPacker")
-
+	backend := &Backend{}
 	box := packr.New(packerName, path)
 
 	filesInBox := box.List()
@@ -59,18 +58,16 @@ func NewWithPacker(packerName string, path string) error{
 		log.Println(file)
 
 		if strings.Contains(file, "yml") {
-			s, err := box.FindString(file)
+			s, err := box.Find(file)
 
 			if err != nil {
-				return err
+				return nil ,err
 			}
-
-			log.Print(s)
+			backend.contents = append(backend.contents, s)
 		}
-
 	}
 
-	return nil
+	return backend, nil
 }
 
 // NewWithWalk has the same functionality as New but uses filepath.Walk to find all the translation files recursively.
