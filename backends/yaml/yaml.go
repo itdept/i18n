@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/gobuffalo/packr/v2"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -56,8 +55,6 @@ func NewWithPacker(paths ...string) (*Backend, error){
 		filesInBox := box.List()
 
 		for _, file := range filesInBox {
-			log.Println(file)
-
 			if strings.Contains(file, ".yml") {
 				s, err := box.Find(file)
 
