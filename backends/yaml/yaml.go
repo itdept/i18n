@@ -47,24 +47,28 @@ func New(paths ...string) *Backend {
 }
 
 // New new YAML backend for I18n that implements backer to package the files
-func NewWithPacker(packerName string, path string) (*Backend, error){
+func NewWithPacker(paths ...string) (*Backend, error){
 
 	backend := &Backend{}
-	box := packr.New(packerName, path)
-	filesInBox := box.List()
 
-	for _, file := range filesInBox {
-		log.Println(file)
+	for _, path := range paths {
+		box := packr.New("i18nConfig", path)
+		filesInBox := box.List()
 
-		if strings.Contains(file, ".yml") {
-			s, err := box.Find(file)
+		for _, file := range filesInBox {
+			log.Println(file)
 
-			if err != nil {
-				return nil ,err
+			if strings.Contains(file, ".yml") {
+				s, err := box.Find(file)
+
+				if err != nil {
+					return nil ,err
+				}
+				backend.contents = append(backend.contents, s)
 			}
-			backend.contents = append(backend.contents, s)
 		}
 	}
+
 	return backend, nil
 }
 
