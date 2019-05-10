@@ -51,13 +51,12 @@ func NewWithPacker(packerName string, path string) (*Backend, error){
 
 	backend := &Backend{}
 	box := packr.New(packerName, path)
-
 	filesInBox := box.List()
 
 	for _, file := range filesInBox {
 		log.Println(file)
 
-		if strings.Contains(file, "yml") {
+		if strings.Contains(file, ".yml") {
 			s, err := box.Find(file)
 
 			if err != nil {
@@ -66,7 +65,6 @@ func NewWithPacker(packerName string, path string) (*Backend, error){
 			backend.contents = append(backend.contents, s)
 		}
 	}
-
 	return backend, nil
 }
 
