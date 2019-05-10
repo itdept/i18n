@@ -11,6 +11,7 @@ import (
 
 	"github.com/itdept/i18n"
 	"gopkg.in/yaml.v2"
+	"github.com/gobuffalo/packr/v2"
 )
 
 var _ i18n.Backend = &Backend{}
@@ -23,7 +24,7 @@ func New(paths ...string) *Backend {
 	for _, p := range paths {
 		if file, err := os.Open(p); err == nil {
 			defer file.Close()
-			if fileInfo, err := file.Stat(); err == nil {
+			if? fileInfo, err := file.Stat(); err == nil {
 				if fileInfo.IsDir() {
 					yamlFiles, _ := filepath.Glob(filepath.Join(p, "*.yaml"))
 					files = append(files, yamlFiles...)
@@ -42,6 +43,21 @@ func New(paths ...string) *Backend {
 		}
 	}
 	return backend
+}
+
+// New new YAML backend for I18n that implements backer to package the files
+func NewWithPacker(packerName string, path string) {
+
+
+	box := packr.New(packerName, path)
+
+	filesInBox := box.List()
+
+	for _, file := range filesInBox {
+		fmt.Println(file)
+	}
+
+	fmt.Println(filesInBox)
 }
 
 // NewWithWalk has the same functionality as New but uses filepath.Walk to find all the translation files recursively.
