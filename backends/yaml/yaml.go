@@ -93,7 +93,7 @@ func NewWithWalk(paths ...string) i18n.Backend {
 	return backend
 }
 
-// New new YAML backend for I18n that implements backer to package the files
+// New new YAML backend for I18n that implements backer to package all the files in the directory
 func NewWithPackerAndWalk(paths ...string) (*Backend, error){
 
 	backend := &Backend{}
