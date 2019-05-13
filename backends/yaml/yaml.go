@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gobuffalo/packr/v2"
-	"github.com/gobuffalo/packr/v2/file"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -48,33 +47,31 @@ func New(paths ...string) *Backend {
 }
 
 // New new YAML backend for I18n that implements backer to package the files
-func NewWithPacker(paths ...string) (*Backend, error){
+func NewWithPacker(withWalk bool, paths ...string) (*Backend, error){
 
 	backend := &Backend{}
 
 	for _, path := range paths {
 		box := packr.New("i18nConfig", path)
-		//filesInBox := box.List()
-		//
-		//log.Println(filesInBox)
-		//
-		//for _, file := range filesInBox {
-		//	if strings.Contains(file, ".yml") {
-		//		s, err := box.Find(file)
-		//
-		//		if err != nil {
-		//			return nil ,err
-		//		}
-		//		backend.contents = append(backend.contents, s)
-		//	}
-		//}
+		filesInBox := box.List()
 
-		box.Walk(func(path string, f file.File) error {
-			//act = append(act, path)
-			log.Println("********* ", path)
-			return nil
-		})
+		log.Println(filesInBox)
 
+		for _, file := range filesInBox {
+
+			if !withWalk && !strings.Contains(file, "/") {
+				log.Println("just file in root folder")
+			}
+
+			if strings.Contains(file, ".yml") {
+				s, err := box.Find(file)
+
+				if err != nil {
+					return nil ,err
+				}
+				backend.contents = append(backend.contents, s)
+			}
+		}
 	}
 	return backend, nil
 }
