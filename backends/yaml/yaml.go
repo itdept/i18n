@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gobuffalo/packr/v2"
-	"github.com/gobuffalo/packr/v2/file"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -99,25 +98,45 @@ func NewPackrWithWalk(paths ...string) (i18n.Backend, error) {
 	var subDirs []string
 
 	for _, path := range paths {
-		//filesInBox := box.List()
 
-		log.Println("************************ current path: ", path)
+		log.Println("************************ current main path: ", path)
 
 		box := packr.New("i18nConfig", path)
+		filesInBox := box.List()
 
-		box.Walk(func(subPath string, f file.File) error {
-			log.Println("**************************** sub dir ", subPath)
+		for _, contentPath := range filesInBox {
+			if strings.Contains(contentPath, ".yml") {
+				s, err := box.Find(contentPath)
 
-			subDirs = append(subDirs, subPath)
+				if err != nil {
+					return nil ,err
+				}
+				backend.contents = append(backend.contents, s)
+			} else {
+				log.Println("************************** is folder path: ", contentPath)
+				walkPath(contentPath)
+			}
+		}
 
-			return nil
-		})
+
+		//box.Walk(func(subPath string, f file.File) error {
+		//	log.Println("**************************** sub dir ", subPath)
+		//
+		//	subDirs = append(subDirs, subPath)
+		//
+		//	return nil
+		//})
 
 	}
 
 	log.Println(subDirs)
 
 	return backend, nil
+}
+
+func walkPath (subDirPath string) {
+	//box := packr.New("i18nConfig", subDirPath)
+	//filesInBox := box.List()
 }
 
 func isYamlFile(fileInfo os.FileInfo) bool {
