@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gobuffalo/packr/v2"
+	"github.com/gobuffalo/packr/v2/file"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -65,7 +67,6 @@ func NewWithPacker(paths ...string) (*Backend, error){
 			}
 		}
 	}
-
 	return backend, nil
 }
 
@@ -89,6 +90,34 @@ func NewWithWalk(paths ...string) i18n.Backend {
 	}
 
 	return backend
+}
+
+// NewWithWalk has the same functionality as New but uses filepath.Walk to find all the translation files recursively.
+func NewPackrWithWalk(paths ...string) (i18n.Backend, error) {
+	backend := &Backend{}
+
+	var subDirs []string
+
+	for _, path := range paths {
+		//filesInBox := box.List()
+
+		log.Println("************************ current path: ", path)
+
+		box := packr.New("i18nConfig", path)
+
+		box.Walk(func(subPath string, f file.File) error {
+			log.Println("**************************** sub dir ", subPath)
+
+			subDirs = append(subDirs, subPath)
+
+			return nil
+		})
+
+	}
+
+	log.Println(subDirs)
+
+	return backend, nil
 }
 
 func isYamlFile(fileInfo os.FileInfo) bool {
