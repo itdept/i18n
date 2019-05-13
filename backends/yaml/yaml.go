@@ -54,7 +54,9 @@ func NewWithPacker(paths ...string) (*Backend, error){
 	for _, path := range paths {
 		box := packr.New("i18nConfig", path)
 		filesInBox := box.List()
+
 		log.Println(filesInBox)
+
 		for _, file := range filesInBox {
 			if strings.Contains(file, ".yml") {
 				s, err := box.Find(file)
