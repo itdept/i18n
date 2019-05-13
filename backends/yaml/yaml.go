@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/gobuffalo/packr/v2"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -57,9 +56,6 @@ func NewWithPacker(paths ...string) (*Backend, error){
 
 		for _, file := range filesInBox {
 			if !strings.Contains(file, "/") && strings.Contains(file, ".yml") {
-
-				log.Println("********* ", file)
-
 				s, err := box.Find(file)
 				if err != nil {
 					return nil ,err
@@ -101,8 +97,6 @@ func NewWithPackerAndWalk(paths ...string) (*Backend, error){
 	for _, path := range paths {
 		box := packr.New("i18nConfig", path)
 		filesInBox := box.List()
-
-		log.Println(filesInBox)
 
 		for _, file := range filesInBox {
 			if strings.Contains(file, ".yml") {
