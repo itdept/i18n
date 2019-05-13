@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gobuffalo/packr/v2"
+	"github.com/gobuffalo/packr/v2/file"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -53,20 +54,27 @@ func NewWithPacker(paths ...string) (*Backend, error){
 
 	for _, path := range paths {
 		box := packr.New("i18nConfig", path)
-		filesInBox := box.List()
+		//filesInBox := box.List()
+		//
+		//log.Println(filesInBox)
+		//
+		//for _, file := range filesInBox {
+		//	if strings.Contains(file, ".yml") {
+		//		s, err := box.Find(file)
+		//
+		//		if err != nil {
+		//			return nil ,err
+		//		}
+		//		backend.contents = append(backend.contents, s)
+		//	}
+		//}
 
-		log.Println(filesInBox)
+		box.Walk(func(path string, f file.File) error {
+			//act = append(act, path)
+			log.Println("********* ", path)
+			return nil
+		})
 
-		for _, file := range filesInBox {
-			if strings.Contains(file, ".yml") {
-				s, err := box.Find(file)
-
-				if err != nil {
-					return nil ,err
-				}
-				backend.contents = append(backend.contents, s)
-			}
-		}
 	}
 	return backend, nil
 }
@@ -92,49 +100,6 @@ func NewWithWalk(paths ...string) i18n.Backend {
 
 	return backend
 }
-
-// NewWithWalk has the same functionality as New but uses filepath.Walk to find all the translation files recursively.
-func NewPackrWithWalk(paths ...string) (i18n.Backend, error) {
-	backend := &Backend{}
-
-	//var subDirs []string
-
-	for _, path := range paths {
-
-		log.Println("************************ current main path: ", path)
-
-		box := packr.New("i18nConfig", path)
-		filesInBox := box.List()
-
-		log.Println(filesInBox)
-
-		for _, contentPath := range filesInBox {
-			if strings.Contains(contentPath, ".yml") {
-				s, err := box.Find(contentPath)
-
-				if err != nil {
-					return nil ,err
-				}
-				backend.contents = append(backend.contents, s)
-			}
-		}
-
-
-		//box.Walk(func(subPath string, f file.File) error {
-		//	log.Println("**************************** sub dir ", subPath)
-		//
-		//	subDirs = append(subDirs, subPath)
-		//
-		//	return nil
-		//})
-
-	}
-
-	//log.Println(subDirs)
-
-	return backend, nil
-}
-
 
 func isYamlFile(fileInfo os.FileInfo) bool {
 	if fileInfo == nil {
