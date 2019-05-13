@@ -60,7 +60,7 @@ func NewWithPacker(withWalk bool, paths ...string) (*Backend, error){
 		for _, file := range filesInBox {
 
 			if !withWalk && !strings.Contains(file, "/") {
-				log.Println("just file in root folder")
+				log.Println("just file in root folder ", file)
 			}
 
 			if strings.Contains(file, ".yml") {
