@@ -95,7 +95,7 @@ func NewWithWalk(paths ...string) i18n.Backend {
 func NewPackrWithWalk(paths ...string) (i18n.Backend, error) {
 	backend := &Backend{}
 
-	var subDirs []string
+	//var subDirs []string
 
 	for _, path := range paths {
 
@@ -103,6 +103,8 @@ func NewPackrWithWalk(paths ...string) (i18n.Backend, error) {
 
 		box := packr.New("i18nConfig", path)
 		filesInBox := box.List()
+
+		log.Println(filesInBox)
 
 		for _, contentPath := range filesInBox {
 			if strings.Contains(contentPath, ".yml") {
@@ -129,7 +131,7 @@ func NewPackrWithWalk(paths ...string) (i18n.Backend, error) {
 
 	}
 
-	log.Println(subDirs)
+	//log.Println(subDirs)
 
 	return backend, nil
 }
