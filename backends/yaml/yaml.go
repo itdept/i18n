@@ -54,7 +54,7 @@ func NewWithPacker(paths ...string) (*Backend, error){
 	for _, path := range paths {
 		box := packr.New("i18nConfig", path)
 		filesInBox := box.List()
-
+		log.Println(filesInBox)
 		for _, file := range filesInBox {
 			if strings.Contains(file, ".yml") {
 				s, err := box.Find(file)
@@ -114,9 +114,6 @@ func NewPackrWithWalk(paths ...string) (i18n.Backend, error) {
 					return nil ,err
 				}
 				backend.contents = append(backend.contents, s)
-			} else {
-				log.Println("************************** is folder path: ", contentPath)
-				walkPath(contentPath)
 			}
 		}
 
@@ -136,10 +133,6 @@ func NewPackrWithWalk(paths ...string) (i18n.Backend, error) {
 	return backend, nil
 }
 
-func walkPath (subDirPath string) {
-	//box := packr.New("i18nConfig", subDirPath)
-	//filesInBox := box.List()
-}
 
 func isYamlFile(fileInfo os.FileInfo) bool {
 	if fileInfo == nil {
