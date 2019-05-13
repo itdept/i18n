@@ -3,6 +3,7 @@ package yaml
 import (
 	"errors"
 	"fmt"
+	"github.com/gobuffalo/packr/v2"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -44,6 +45,28 @@ func New(paths ...string) *Backend {
 	return backend
 }
 
+// New new YAML backend for I18n that implements backer to package the files
+func NewWithPacker(paths ...string) (*Backend, error){
+
+	backend := &Backend{}
+
+	for _, path := range paths {
+		box := packr.New("i18nConfig", path)
+		filesInBox := box.List()
+
+		for _, file := range filesInBox {
+			if !strings.Contains(file, "/") && strings.Contains(file, ".yml") {
+				s, err := box.Find(file)
+				if err != nil {
+					return nil ,err
+				}
+				backend.contents = append(backend.contents, s)
+			}
+		}
+	}
+	return backend, nil
+}
+
 // NewWithWalk has the same functionality as New but uses filepath.Walk to find all the translation files recursively.
 func NewWithWalk(paths ...string) i18n.Backend {
 	backend := &Backend{}
@@ -64,6 +87,28 @@ func NewWithWalk(paths ...string) i18n.Backend {
 	}
 
 	return backend
+}
+
+// New new YAML backend for I18n that implements backer to package all the files in the directory
+func NewWithPackerAndWalk(paths ...string) (*Backend, error){
+
+	backend := &Backend{}
+
+	for _, path := range paths {
+		box := packr.New("i18nConfig", path)
+		filesInBox := box.List()
+
+		for _, file := range filesInBox {
+			if strings.Contains(file, ".yml") {
+				s, err := box.Find(file)
+				if err != nil {
+					return nil ,err
+				}
+				backend.contents = append(backend.contents, s)
+			}
+		}
+	}
+	return backend, nil
 }
 
 func isYamlFile(fileInfo os.FileInfo) bool {
